@@ -15,12 +15,12 @@ datasource db {
 
 model Products {
   id               String  @id @default(uuid())
-  productThumbnail String  @map("productThumbnail")
+  productThumbnail String  @unique  @map("productThumbnail") 
   productTitle     String  @map("productTitle")
   productDesc      String  @map("productDescription")
   productCost      String  @map("productCost")
   onOffer          Boolean @map("onOffer")
 
-  @@unique([productThumbnail, productTitle])
+
   @@map("products_tb")
 }

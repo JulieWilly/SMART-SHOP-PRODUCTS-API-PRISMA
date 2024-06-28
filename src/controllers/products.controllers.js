@@ -1,3 +1,7 @@
+
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
+
 export const getAllProducts = async (req, res) => {
   // const allProducts = await prisma.
   try {
@@ -66,10 +70,6 @@ export const createProduct = async (req, res) => {
         res.send({message: 'Please enter all the required fields.'})
     }
 
-    // if(typeof(onOffer) !== Boolean) {
-    //     res.send({message: "Please enter a boolean value."})
-    //     onOffer
-    // }
     const createProduct = await prisma.products.create({
       data: {
         productThumbnail,
@@ -80,9 +80,9 @@ export const createProduct = async (req, res) => {
       },
     });
 
-    res.json(createProduct);
+res.status(200).json({success: true, message: "Product has been created successfully.", data: createProduct});
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, message: "Cannot create a duplicate product" });
   }
 }
 
@@ -111,9 +111,9 @@ export const updateSingleProduct = async (req, res) => {
       data: updates,
     });
 
-    res.json(updateProducts);
+    res.status(200).json({ success: true, message: "Product updated successfully.", data: updateProducts });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, message: "Product to update not found. Check and try again." });
   }
 }
 
@@ -132,10 +132,10 @@ export const deleteProducts = async (req, res) => {
       .status(200)
       .json({
         success: true,
-        message: "User deleted succesfully.",
+        message: "Product deleted succesfully.",
         data: deleteProduct,
       });
   } catch (e) {
-    res.status(500).json({ success: false, message: e.message });
+    res.status(500).json({ success: false, message: "Product cannot be found."});
   }
 }
